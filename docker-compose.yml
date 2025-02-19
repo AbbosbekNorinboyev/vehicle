@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  spring-boot-vehicle:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring-boot-vehicle
+    restart: always
+    ports:
+      - "4467:4467"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/project?currentSchema=vehicle
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=2210
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2210
+      POSTGRES_DB: project
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+volumes:
+  postgres_data: { }
+
+networks:
+  mynetwork:
+    driver: bridge
