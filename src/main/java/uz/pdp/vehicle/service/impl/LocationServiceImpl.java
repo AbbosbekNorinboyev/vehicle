@@ -3,6 +3,7 @@ package uz.pdp.vehicle.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import uz.pdp.vehicle.dto.ApiResponse;
@@ -28,7 +29,7 @@ public class LocationServiceImpl implements LocationService {
         Location location = locationMapper.toEntity(locationCreateCTO);
         locationRepository.save(location);
         return ApiResponse.<LocationCreateDTO>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Location successfully saved")
                 .success(true)
                 .data(locationMapper.toDto(location))
@@ -40,7 +41,7 @@ public class LocationServiceImpl implements LocationService {
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Location not found: " + locationId));
         return ApiResponse.<LocationCreateDTO>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Location successfully found")
                 .success(true)
                 .data(locationMapper.toDto(location))
@@ -52,7 +53,7 @@ public class LocationServiceImpl implements LocationService {
         List<Location> locations = locationRepository.findAll();
         logger.info("Location list successfully found");
         return ApiResponse.<List<LocationCreateDTO>>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Location list successfully found")
                 .success(true)
                 .data(locations.stream().map(locationMapper::toDto).toList())
@@ -63,7 +64,7 @@ public class LocationServiceImpl implements LocationService {
     public ApiResponse<Void> updateLocation(@NonNull Location location) {
         locationRepository.save(location);
         return ApiResponse.<Void>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Location successfully updated")
                 .success(true)
                 .build();

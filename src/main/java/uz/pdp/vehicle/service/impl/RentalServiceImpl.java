@@ -3,6 +3,7 @@ package uz.pdp.vehicle.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import uz.pdp.vehicle.dto.ApiResponse;
@@ -37,7 +38,7 @@ public class RentalServiceImpl implements RentalService {
         Rental rental = rentalMapper.toEntity(rentalCreateDTO);
         rentalRepository.save(rental);
         return ApiResponse.<RentalCreateDTO>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Rental successfully found")
                 .success(true)
                 .data(rentalMapper.toDto(rental))
@@ -49,7 +50,7 @@ public class RentalServiceImpl implements RentalService {
         Rental rental = rentalRepository.findById(rentalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Rental not found: " + rentalId));
         return ApiResponse.<RentalCreateDTO>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Rental successfully found")
                 .success(true)
                 .data(rentalMapper.toDto(rental))
@@ -61,7 +62,7 @@ public class RentalServiceImpl implements RentalService {
         List<Rental> rentals = rentalRepository.findAll();
         logger.info("Rental list successfully found");
         return ApiResponse.<List<RentalCreateDTO>>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Rental list successfully found")
                 .success(true)
                 .data(rentals.stream().map(rentalMapper::toDto).toList())

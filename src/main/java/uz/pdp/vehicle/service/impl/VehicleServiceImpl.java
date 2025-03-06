@@ -3,6 +3,7 @@ package uz.pdp.vehicle.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import uz.pdp.vehicle.dto.ApiResponse;
@@ -28,7 +29,7 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = vehicleMapper.toEntity(vehicleCreateCTO);
         vehicleRepository.save(vehicle);
         return ApiResponse.<VehicleCreateCTO>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Vehicle successfully saved")
                 .success(true)
                 .data(vehicleMapper.toDto(vehicle))
@@ -40,7 +41,7 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found: " + vehicleId));
         return ApiResponse.<VehicleCreateCTO>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Vehicle successfully found")
                 .success(true)
                 .data(vehicleMapper.toDto(vehicle))
@@ -52,7 +53,7 @@ public class VehicleServiceImpl implements VehicleService {
         List<Vehicle> vehicles = vehicleRepository.findAll();
         logger.info("Vehicle list successfullyt found");
         return ApiResponse.<List<VehicleCreateCTO>>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Vehicle list successfully found")
                 .success(true)
                 .data(vehicles.stream().map(vehicleMapper::toDto).toList())
@@ -63,7 +64,7 @@ public class VehicleServiceImpl implements VehicleService {
     public ApiResponse<Void> updateVehicle(@NonNull Vehicle vehicle) {
         vehicleRepository.save(vehicle);
         return ApiResponse.<Void>builder()
-                .code(200)
+                .code(HttpStatus.OK.value())
                 .message("Vehicle successfully updated")
                 .success(true)
                 .build();
