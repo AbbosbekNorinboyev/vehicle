@@ -16,7 +16,6 @@ import uz.pdp.vehicle.repository.CustomerRepository;
 import uz.pdp.vehicle.service.CustomerService;
 import uz.pdp.vehicle.validation.CustomerValidation;
 
-import java.net.http.HttpClient;
 import java.util.List;
 
 @Service
@@ -30,7 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ApiResponse<CustomerCreateDTO> saveCustomer(@NonNull CustomerCreateDTO customerCreateDTO) {
         List<ErrorDTO> errors = customerValidation.validate(customerCreateDTO);
-        if (!errors.isEmpty()){
+        if (!errors.isEmpty()) {
+            logger.error("Customer validation error");
             return ApiResponse.<CustomerCreateDTO>builder()
                     .code(HttpStatus.BAD_REQUEST.value())
                     .message("Customer validation error")
@@ -40,6 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         Customer customer = customerMapper.toEntity(customerCreateDTO);
         customerRepository.save(customer);
+        logger.info("Customer successfully saved");
         return ApiResponse.<CustomerCreateDTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Customer successfully saved")
@@ -52,6 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
     public ApiResponse<CustomerCreateDTO> getCustomerById(@NonNull Integer customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found: " + customerId));
+        logger.info("Customer successfully found");
         return ApiResponse.<CustomerCreateDTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Customer successfully found")
@@ -75,6 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ApiResponse<Void> updateCustomer(@NonNull Customer customer) {
         customerRepository.save(customer);
+        logger.info("Customer successfully updated");
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
                 .message("Customer successfully updated")

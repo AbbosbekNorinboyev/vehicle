@@ -28,6 +28,7 @@ public class LocationServiceImpl implements LocationService {
     public ApiResponse<LocationCreateDTO> saveLocation(@NonNull LocationCreateDTO locationCreateCTO) {
         Location location = locationMapper.toEntity(locationCreateCTO);
         locationRepository.save(location);
+        logger.info("Location successfully created");
         return ApiResponse.<LocationCreateDTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Location successfully saved")
@@ -40,6 +41,7 @@ public class LocationServiceImpl implements LocationService {
     public ApiResponse<LocationCreateDTO> getLocationById(@NonNull Integer locationId) {
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Location not found: " + locationId));
+        logger.info("Location successfully found");
         return ApiResponse.<LocationCreateDTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Location successfully found")
@@ -63,6 +65,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public ApiResponse<Void> updateLocation(@NonNull Location location) {
         locationRepository.save(location);
+        logger.info("Location list successfully updated");
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
                 .message("Location successfully updated")

@@ -1,5 +1,6 @@
 package uz.pdp.vehicle.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ApiResponse<Void> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException) {
         return ApiResponse.<Void>builder()
-                .code(404)
+                .code(HttpStatus.NOT_FOUND.value())
                 .message(resourceNotFoundException.getMessage())
                 .success(false)
                 .build();
@@ -40,7 +41,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ApiResponse<Void> handleException(Exception exception) {
         return ApiResponse.<Void>builder()
-                .code(500)
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message("Something wrong -> " + exception.getMessage())
                 .success(false)
                 .build();

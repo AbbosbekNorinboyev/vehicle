@@ -28,6 +28,7 @@ public class VehicleServiceImpl implements VehicleService {
     public ApiResponse<VehicleCreateCTO> saveVehicle(@NonNull VehicleCreateCTO vehicleCreateCTO) {
         Vehicle vehicle = vehicleMapper.toEntity(vehicleCreateCTO);
         vehicleRepository.save(vehicle);
+        logger.info("Vehicle successfully created");
         return ApiResponse.<VehicleCreateCTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Vehicle successfully saved")
@@ -40,6 +41,7 @@ public class VehicleServiceImpl implements VehicleService {
     public ApiResponse<VehicleCreateCTO> getVehicle(@NonNull Integer vehicleId) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found: " + vehicleId));
+        logger.info("Vehicle successfully found");
         return ApiResponse.<VehicleCreateCTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Vehicle successfully found")
@@ -51,7 +53,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public ApiResponse<List<VehicleCreateCTO>> getAllVehicle() {
         List<Vehicle> vehicles = vehicleRepository.findAll();
-        logger.info("Vehicle list successfullyt found");
+        logger.info("Vehicle list successfully found");
         return ApiResponse.<List<VehicleCreateCTO>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Vehicle list successfully found")
@@ -63,6 +65,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public ApiResponse<Void> updateVehicle(@NonNull Vehicle vehicle) {
         vehicleRepository.save(vehicle);
+        logger.info("Vehicle successfully updated");
         return ApiResponse.<Void>builder()
                 .code(HttpStatus.OK.value())
                 .message("Vehicle successfully updated")

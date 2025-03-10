@@ -37,6 +37,7 @@ public class RentalServiceImpl implements RentalService {
     public ApiResponse<RentalCreateDTO> saveRental(@NonNull RentalCreateDTO rentalCreateDTO) {
         Rental rental = rentalMapper.toEntity(rentalCreateDTO);
         rentalRepository.save(rental);
+        logger.info("Rental successfully created");
         return ApiResponse.<RentalCreateDTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Rental successfully found")
@@ -49,6 +50,7 @@ public class RentalServiceImpl implements RentalService {
     public ApiResponse<RentalCreateDTO> getRental(@NonNull Integer rentalId) {
         Rental rental = rentalRepository.findById(rentalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Rental not found: " + rentalId));
+        logger.info("Rental successfully found");
         return ApiResponse.<RentalCreateDTO>builder()
                 .code(HttpStatus.OK.value())
                 .message("Rental successfully found")

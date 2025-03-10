@@ -2,7 +2,6 @@ package uz.pdp.vehicle.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.vehicle.dto.ApiResponse;
 import uz.pdp.vehicle.dto.VehicleCreateCTO;
